@@ -41,12 +41,21 @@ if __name__ == '__main__':
                 print('| {:>4} | {:<10} |'.format(key, value))
             print(line)
 
+        # Вычислить общее количество учащихся в школе
+        elif command == 'total':
+            total_students = sum(school.values())
+            print("Общее количество учащихся в школе:", total_students)
+
+        # Вывести справку о работе с программой.
         elif command == 'help':
-            # Вывести справку о работе с программой.
             print("Список команд:\n")
             print("add - добавить новый класс;")
-            print("list - вывести список работниковклассов;")
+            print("edit - изменить количество учащихся;")
+            print("delete - удалить класс;")
+            print("total - вывести общее количество учащихся;")
+            print("list - вывести список классов;")
             print("help - отобразить справку;")
             print("exit - завершить работу с программой.")
         else:
             print(f"Неизвестная команда {command}", file=sys.stderr)
+

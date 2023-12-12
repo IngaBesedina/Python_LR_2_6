@@ -5,45 +5,33 @@ import sys
 
 
 if __name__ == '__main__':
-    N = 5
+    # Создаем список из словарей
     students = []
 
-    while True:
-        command = input(">>> ").lower()
+    # Ввод данных с клавиатуры
+    n = int(input("Введите количество студентов: "))
+    for i in range(n):
+        surname = input("Введите фамилию и инициалы: ")
+        group_num = input("Введите номер группы: ")
+        print('Введите оценки: ')
+        grades = [int(n) for n in input().split()]
 
-        if command == 'exit':
-            break
+        student = {
+            'name': surname,
+            'group_number': group_num,
+            'grades': grades
+        }
+        students.append(student)
 
-        if command == "add":
-            name = input("Фамилия и инициалы: ")
-            num = int(input("Номер группы: "))
-            grade = [int(n) for n in input().split()]
+    # Сортировка по возрастанию среднего балла
+    students.sort(key=lambda x: sum(x['grades']) / 5)
 
-            student = {
-                'name': name,
-                'num': num,
-                'grades': grade,
-            }
+    # Вывод на экран фамилий и номеров групп для студентов с оценками 4 и 5
+    found = False
+    for student in students:
+        if all(grade >= 4 for grade in student['grades']):
+            print(f"Студент: {student['name']}, Группа: {student['group_number']}")
+            found = True
 
-            students.append(student)
-            sorted_students = sorted(students, key=lambda x: sum(x['grades']) / len(x['grades']))
-
-        elif command == 'list':
-            line = '+-{}-+-{}-+'.format('-' * 20, '-' * 14)
-            print(line)
-            print(
-                '| {:^20} | {:^14} |'.format("Ф.И.О", "Номер группы"))
-            print(line)
-
-            count = 0.
-            for student in sorted_students:
-                if 4 in student['grades'] or 5 in student['grades']:
-                    print('| {:^20} | {:^14} |'.format(student.get('name', ''), student.get('num', '')))
-                    count += 1
-
-            if count == 0:
-                print('Нет студентов, имеющих оценки 4 или 5 ')
-            print(line)
-
-        else:
-            print(f"Неизвестная команда {command}", file=sys.stderr)
+    if not found:
+        print("Студентов с оценками 4 и 5 нет")
